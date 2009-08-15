@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Insert title here</title>
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+		
+	</head>
+<body>
+
+	<!-- 	<form action="/resources/school/district/data/gis" method="post" id="gisdataentryform">  
+	-->
+	
+	<div>
+		id: <input type="text" name="id" id="idid" class="inputelem" /> <br>
+		name: <input type="text" name="name" id="nameid"  class="inputelem" /> <br>
+		countyfips: <input type="text" name="countyfips" id="countyfipsid"  class="inputelem" /> <br>
+		statecode: <input type="text" name="statecode" id="statecodeid"  class="inputelem" /> <br>
+		wkt: <input type="text" name="wkt" id="wktid"  class="inputelem" /> <br>
+	<input type="button" value="Submit" id="submitButton" />
+	</div>
+	<br>
+	
+	<div id="resultTag">
+	</div>
+
+	<script type="text/javascript">
+	var xmlDocument="default";
+	
+	$(document).ready(function(){
+		function showValues() {
+	      var str = $(".inputelem").serialize();
+	      $("#resultTag").text(str);
+	      //xmlDocument = "<SCHOOLDISTRICT><ID>"+ $("nameid").val()+"</ID><NAME>"+"</NAME><FIPS></FIPS><WKT></WKT></SCHOOLDISTRICT>";
+	    }
+		showValues();
+	});
+
+	$("#submitButton").click(function () {
+		alert("submit function touched");
+		var idid 		= $("#idid").val();
+		var nameid 		= $("#nameid").val();
+		var countyfips 	= $("#countyfipsid").val();
+		var statecode 	= $("#statecodeid").val();
+		var wktid 		= $("#wktid").val();				
+		xmlDocument = "<SCHOOLDISTRICT><ID>"+ idid +"</ID><NAME>"+ nameid+"</NAME><FIPS>"+countyfips+"</FIPS><STATECODE>"+statecode+"</STATECODE><WKT>"+wktid+"</WKT></SCHOOLDISTRICT>";
+		//xmlDocument ="<modon><idd> he he ho ho </idd></modon>";
+		//Send POST to server
+		$.ajax({
+		   url: "/resources/school/district/gisdata/",
+		   type: "POST",
+		   processData: false, //do not process sent data to confirm contentType "applicatin/x-www-form-urlencoded"
+		   data: xmlDocument,
+		   contentType: "text/xml",
+		   success: handleServerReturn
+		 });
+		return false; 
+	}); // so it won't submit
+
+	function handleServerReturn(data){
+		$("#resultTag").text(data.toString());
+	}
+
+	
+	</script>
+</body>
+</html>
